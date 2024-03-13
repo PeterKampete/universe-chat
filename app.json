@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "universe-chat",
+    "slug": "universe-chat",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
