@@ -41,7 +41,7 @@ const MainNavigation = () => {
             },
             headerLeft: (props) => (
               <TouchableOpacity
-                style={{ paddingLeft: 20, backgroundColor: 'red', padding: 10 }}
+                style={{ paddingLeft: 20, padding: 10 }}
               >
                 <Ionicons name='chevron-back' size={20} color='#fff' />
               </TouchableOpacity>
