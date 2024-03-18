@@ -1,12 +1,8 @@
-import {
-  TextInput,
-  View,
-  ViewStyle,
-} from 'react-native';
+import { TextInput, View, ViewStyle } from 'react-native';
 import React, { ReactNode } from 'react';
 import styles from './styles';
 import { DEVICE_HEIGHT } from '../../constants/sizes';
-import { lightAccent, secondary } from '../../constants/colors';
+import { lightAccent, lightGrey, secondary } from '../../constants/colors';
 
 interface IProps {
   title?: string;
@@ -34,8 +30,8 @@ const CustomInput: React.FC<IProps> = ({
   height = DEVICE_HEIGHT * 0.07,
   borderRadius = 10,
   borderWidth = 0.3,
-  borderColor = 'grey',
-  color = 'grey',
+  borderColor = lightGrey,
+  color = lightGrey,
   placeholder,
   style,
   ...props
@@ -71,14 +67,19 @@ const CustomInput: React.FC<IProps> = ({
             width: '100%',
             paddingLeft: leftIcon && height - 8,
             paddingRight: rightIcon && height - 8,
-            color: '#fff',
+            color: 'rgba(255, 255, 255,0.6)',
           },
         ]}
         {...props}
       />
 
       {rightIcon && (
-        <View style={[styles.icon, { height, width: height - 12, paddingRight: rightIcon && 10 }]}>
+        <View
+          style={[
+            styles.icon,
+            { height, width: height - 12, paddingRight: rightIcon && 10 },
+          ]}
+        >
           {rightIcon()}
         </View>
       )}

@@ -1,8 +1,11 @@
 export const paths = {
-  WELCOME: 'welcome',
-  HOME: 'home',
+  WELCOME: 'Welcome',
+  HOME: 'Home',
   DRAWERNAVIGATION: 'home-stack',
   HOMESTACK: 'home-stack',
-  AUTH: 'auth',
-  SUGGESTIONS: 'suggestions',
+  AUTH: 'Auth',
+  SUGGESTIONS: 'Suggestions',
+  DOCUMENTS: 'Documents',
+  SETTINGS: 'Settings',
+  SETTINGSSTACK: 'settings-stack'
 };

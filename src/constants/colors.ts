@@ -3,3 +3,4 @@ export const secondary = '#1C1E20';
 export const tertiary = '#2C2B2F';
 export const tertiary2 = '#103e87';
 export const lightAccent = '#ACACAC';
+export const lightGrey = 'rgba(255,255,255,0.15)';

@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ViewStyle,
 } from 'react-native';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { DEVICE_HEIGHT } from '../../constants/sizes';
 import { primary } from '../../constants/colors';
 
@@ -15,16 +15,28 @@ interface IProps {
   text: string;
   bgColor?: string;
   style?: ViewStyle;
-  textStyle?: TextStyle
+  textStyle?: TextStyle;
+  rightIcon?: () => ReactNode;
+  leftIcon?: () => ReactNode;
 }
 
-const CustomButton = ({ onPress, text, bgColor = primary, style, textStyle }: IProps) => {
+const CustomButton = ({
+  onPress,
+  text,
+  bgColor = primary,
+  style,
+  leftIcon,
+  rightIcon,
+  textStyle,
+}: IProps) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       style={[styles.container, { backgroundColor: bgColor }, { ...style }]}
     >
+      {leftIcon && leftIcon?.()}
       <Text style={{ color: '#fff', ...textStyle }}>{text}</Text>
+      {rightIcon && rightIcon?.()}
     </TouchableOpacity>
   );
 };
@@ -38,5 +50,7 @@ const styles = StyleSheet.create({
     height: DEVICE_HEIGHT * 0.065,
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
+    gap: 10
   },
 });

@@ -7,17 +7,25 @@ interface IProps extends TextProps {
   isHeading?: boolean;
   style?: TextStyle;
   color?: string;
+  numberOfLines?: number;
 }
 
-const CustomText = ({ text, isHeading, style, color='#fff' }: IProps) => {
+const CustomText = ({
+  text,
+  isHeading,
+  style,
+  numberOfLines,
+  color = '#fff',
+}: IProps) => {
   return (
     <Text
       style={{
         color,
         fontSize: isHeading ? fontSizes._38 : 14,
         fontWeight: isHeading ? 'bold' : 'normal',
-        ...style
+        ...style,
       }}
+      numberOfLines={numberOfLines}
     >
       {text}
     </Text>

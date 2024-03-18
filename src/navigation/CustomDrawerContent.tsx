@@ -6,6 +6,7 @@ import {
 import React from 'react';
 import {
   Image,
+  ScrollView,
   Text,
   TextStyle,
   TouchableOpacity,
@@ -13,25 +14,53 @@ import {
   ViewStyle,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { CustomBlurview, CustomButton } from '../components';
+import {
+  CustomBlurview,
+  CustomButton,
+  CustomInput,
+  CustomText,
+} from '../components';
 import { DEVICE_HEIGHT, DEVICE_WIDTH } from '../constants/sizes';
 import styles from './styles';
 import { paths } from './paths';
-import { lightAccent } from '../constants/colors';
+import { lightGrey } from '../constants/colors';
 import { BlurView } from '@react-native-community/blur';
+import { chatHistory } from '../constants/chatHistory';
 
-const customDrawerItemStyles: ViewStyle | TextStyle = {
-  borderRadius: 0,
-  width: '100%',
-  marginLeft: -10,
-  paddingLeft: 0,
-  fontSize: 15,
-};
+const CustomChatInput = (props) => (
+  <TouchableOpacity onPress={props.onPress}>
+    <CustomText
+      text='Azure Translation setup with API endpoints and SDK'
+      style={{ lineHeight: 24 }}
+      numberOfLines={1}
+      {...props}
+    />
+  </TouchableOpacity>
+);
+
+const CustomChatSection = (props) => (
+  <View style={{ gap: 24 }}>
+    <CustomText
+      text={props.heading}
+      style={{
+        fontWeight: 'bold',
+        marginTop: DEVICE_HEIGHT * 0.04,
+      }}
+    />
+    {props.texts?.map((text, index) => (
+      <CustomChatInput
+        key={index + text}
+        text={text}
+        onPress={() => console.log('cliked')}
+      />
+    ))}
+  </View>
+);
 
 const CustomDrawerContent = (props) => {
   return (
-    <DrawerContentScrollView {...props}>
-      <BlurView blurAmount={20} blurType='dark' overlayColor='rgba(0,0,0,0.95)'>
+    <DrawerContentScrollView scrollEnabled={false} {...props}>
+      <BlurView blurAmount={20} blurType='dark' overlayColor='rgba(0,0,0,0.92)'>
         <View
           style={{
             height: DEVICE_HEIGHT,
@@ -40,40 +69,61 @@ const CustomDrawerContent = (props) => {
             borderRightWidth: 0.2,
             width: '100%',
             overflow: 'hidden',
+            flex: 1,
           }}
         >
-          <DrawerItemList {...props} />
           <CustomButton
-            text='Logout'
+            text='New Prompt'
+            onPress={() => console.log('prompt')}
             style={{
-              position: 'absolute',
-              bottom: DEVICE_HEIGHT * 0.03,
-              width: '100%',
-              alignSelf: 'center',
-              borderWidth: 1,
-              borderColor: '#fff',
               height: DEVICE_HEIGHT * 0.06,
+              marginBottom: DEVICE_HEIGHT * 0.02,
             }}
-            bgColor='transparent'
-            onPress={() => console.log('loasc')}
+            bgColor='rgba(255,255,255,1)'
+            textStyle={{ color: '#000', fontWeight: 'bold' }}
+            rightIcon={() => <Ionicons name='add' size={20} color={'#000'} />}
           />
-          {/* <DrawerItem
-            label='Logout'
-            icon={({ focused, color, size }) => (
-              <Ionicons
-                name='exit'
-                size={size ? size : 24}
-                color={color}
-                style={{ left: 10 }}
-              />
+          <CustomInput
+            placeholder='search'
+            height={DEVICE_HEIGHT * 0.06}
+            leftIcon={() => (
+              <Ionicons name='search' size={24} color={lightGrey} />
             )}
-            style={customDrawerItemStyles}
-            activeTintColor='#fff'
-            inactiveTintColor='#fff'
-            activeBackgroundColor='transparent'
-            onPress={() => console.log('loasc')}
-          /> */}
+            style={{
+              marginBottom: DEVICE_HEIGHT * 0.04,
+            }}
+          />
+          <DrawerItemList {...props} />
+          <View style={{ flex: 1 }}>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingHorizontal: 10,
+                paddingBottom: DEVICE_HEIGHT * 0.1,
+              }}
+            >
+              <CustomChatSection heading='Today' texts={chatHistory} />
+              <CustomChatSection heading='Yesterday' texts={chatHistory} />
+              <CustomChatSection heading='Yesterday' texts={chatHistory} />
+            </ScrollView>
+          </View>
         </View>
+        <TouchableOpacity onPress={() => props.navigation.navigate(paths.SETTINGSSTACK)} style={[styles.bottomView, styles.flex]}>
+          <View style={[styles.flex]}>
+            <Image
+              source={require('../assets/images/me.jpg')}
+              style={styles.profile}
+            />
+            <CustomText
+              text='Findo Peter Kampete'
+              style={{
+                fontWeight: 'bold',
+                marginLeft: 5,
+              }}
+            />
+          </View>
+          <Ionicons name='ellipsis-horizontal' size={24} color={'#fff'} />
+        </TouchableOpacity>
       </BlurView>
     </DrawerContentScrollView>
   );

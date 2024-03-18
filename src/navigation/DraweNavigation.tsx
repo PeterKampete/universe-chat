@@ -4,7 +4,7 @@ import {
 } from '@react-navigation/drawer';
 import React from 'react';
 import { paths } from './paths';
-import { Home } from '../screens';
+import { Documents, Home } from '../screens';
 import { DEVICE_WIDTH } from '../constants/sizes';
 import CustomDrawerContent from './CustomDrawerContent';
 import { Ionicons } from '@expo/vector-icons';
@@ -24,7 +24,6 @@ const DraweNavigation = () => {
           width: DEVICE_WIDTH * 0.75,
           borderTopRightRadius: 40,
           borderBottomRightRadius: 40,
-          zIndex: 1,
         },
         drawerItemStyle: {
           borderRadius: 0,
@@ -48,9 +47,19 @@ const DraweNavigation = () => {
         name={paths.HOME}
         component={Home}
         options={{
-          title: 'Home',
           drawerIcon: ({ color, size }) => (
             <Ionicons name='home' size={size ? size : 24} color={color} />
+          ),
+          
+        }}
+      />
+      <Drawer.Screen
+        name={paths.DOCUMENTS}
+        component={Documents}
+        options={{
+          title: 'Document Translation',
+          drawerIcon: ({ color, size }) => (
+            <Ionicons name='document-text' size={size ? size : 24} color={color} />
           ),
         }}
       />
