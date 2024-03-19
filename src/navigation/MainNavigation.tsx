@@ -17,7 +17,7 @@ const MainNavigation = () => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName={paths.DRAWERNAVIGATION}
+        // initialRouteName={paths.DRAWERNAVIGATION}
       >
         <Stack.Screen name={paths.WELCOME} component={Welcome} />
         <Stack.Screen name={paths.AUTH} component={Auth} />

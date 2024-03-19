@@ -1,9 +1,10 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import MainLayout from '../../layouts/MainLayout';
 import { DEVICE_HEIGHT } from '../../constants/sizes';
 import { CustomText } from '../../components';
 import styles from './styles';
+import { Ionicons } from '@expo/vector-icons';
 
 const Settings = () => {
   return (
@@ -34,6 +35,10 @@ const Settings = () => {
             marginLeft: 5,
           }}
         />
+        <TouchableOpacity style={styles.flex}>
+          <CustomText text='Email' />
+          <Ionicons name='mail-outline' size={24} color='red' />
+        </TouchableOpacity>
       </View>
     </MainLayout>
   );

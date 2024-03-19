@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
   section: {
     marginBottom: DEVICE_HEIGHT * 0.04,
   },
+  
 });
 
 export default styles;
