@@ -1,14 +1,61 @@
-import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import MainLayout from '../../layouts/MainLayout';
+import { useWindowDimensions, Text } from 'react-native';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import LocalDocuments from './LocalDocument';
+import CloudDocuments from './CloudDocuments';
+import { DEVICE_HEIGHT } from '../../constants/sizes';
+import styles from './styles';
 
+const renderTabBar = (props) => (
+  <TabBar
+    {...props}
+    renderLabel={({ route, focused, color }) => (
+      <Text
+        style={[
+          styles.navText,
+          {
+            fontWeight: focused ? 'bold' : 'normal',
+            color: focused ? '#000' : 'rgba(42, 51, 67,0.5)',
+          },
+        ]}
+      >
+        {route.title}
+      </Text>
+    )}
+    style={{ backgroundColor: 'transparent', shadowColor: 'transparent' }}
+    renderIndicator={() => null}
+
+  />
+);
+
+const renderScene = ({ route }) => {
+  switch (route.key) {
+    case 'first':
+      return <LocalDocuments />;
+    case 'second':
+      return <CloudDocuments />;
+    default:
+      return null;
+  }
+};
 const Documents = () => {
+  const layout = useWindowDimensions();
+
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: 'first', title: 'First' },
+    { key: 'second', title: 'Second' },
+  ]);
+
   return (
-    <MainLayout>
-      <View>
-        <Text>Documents</Text>
-      </View>
-    </MainLayout>
+    <TabView
+      navigationState={{ index, routes }}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      initialLayout={{ width: layout.width }}
+      style={{ paddingTop: DEVICE_HEIGHT * 0.08 }}
+      renderTabBar={renderTabBar}
+    />
   );
 };
 

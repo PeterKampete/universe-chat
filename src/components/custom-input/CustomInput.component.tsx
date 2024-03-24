@@ -17,6 +17,8 @@ interface IProps {
   color?: string;
   placeholder?: string;
   style?: ViewStyle;
+  rightWidth?: number;
+  rightPadding?: number;
   // Spread operator for additional props
   [propName: string]: any;
 }
@@ -33,6 +35,8 @@ const CustomInput: React.FC<IProps> = ({
   borderColor = lightGrey,
   color = lightGrey,
   placeholder,
+  rightWidth,
+  rightPadding,
   style,
   ...props
 }: IProps) => {
@@ -77,7 +81,7 @@ const CustomInput: React.FC<IProps> = ({
         <View
           style={[
             styles.icon,
-            { height, width: height - 12, paddingRight: rightIcon && 10 },
+            { height, width: rightWidth ?? height - 12, paddingRight: rightPadding ?? (rightIcon && 10) },
           ]}
         >
           {rightIcon()}

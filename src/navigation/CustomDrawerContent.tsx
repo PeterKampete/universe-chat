@@ -108,23 +108,26 @@ const CustomDrawerContent = (props) => {
             </ScrollView>
           </View>
         </View>
-        <TouchableOpacity onPress={() => props.navigation.navigate(paths.SETTINGSSTACK)} style={[styles.bottomView, styles.flex]}>
-          <View style={[styles.flex]}>
-            <Image
-              source={require('../assets/images/me.jpg')}
-              style={styles.profile}
-            />
-            <CustomText
-              text='Findo Peter Kampete'
-              style={{
-                fontWeight: 'bold',
-                marginLeft: 5,
-              }}
-            />
-          </View>
-          <Ionicons name='ellipsis-horizontal' size={24} color={'#fff'} />
-        </TouchableOpacity>
       </BlurView>
+      <TouchableOpacity
+        onPress={() => props.navigation.navigate(paths.SETTINGSSTACK)}
+        style={[styles.bottomView, styles.flex]}
+      >
+        <View style={[styles.flex]}>
+          <Image
+            source={require('../assets/images/me.jpg')}
+            style={styles.profile}
+          />
+          <CustomText
+            text='Findo Peter Kampete'
+            style={{
+              fontWeight: 'bold',
+              marginLeft: 5,
+            }}
+          />
+        </View>
+        <Ionicons name='ellipsis-horizontal' size={24} color={'#fff'} />
+      </TouchableOpacity>
     </DrawerContentScrollView>
   );
 };

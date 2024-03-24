@@ -15,6 +15,7 @@ const Drawer = createDrawerNavigator();
 const DraweNavigation = () => {
   return (
     <Drawer.Navigator
+    initialRouteName={paths.DOCUMENTS}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerTitle: '',

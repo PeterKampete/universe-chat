@@ -17,7 +17,7 @@ const MainNavigation = () => {
         screenOptions={{
           headerShown: false,
         }}
-        // initialRouteName={paths.DRAWERNAVIGATION}
+        initialRouteName={paths.DRAWERNAVIGATION}
       >
         <Stack.Screen name={paths.WELCOME} component={Welcome} />
         <Stack.Screen name={paths.AUTH} component={Auth} />
@@ -26,28 +26,7 @@ const MainNavigation = () => {
           name={paths.DRAWERNAVIGATION}
           component={DraweNavigation}
         />
-        <Stack.Screen
-          name={paths.SETTINGSSTACK}
-          component={SettingsStack}
-          options={{
-            title: 'Settings',
-            headerShown: true,
-            headerShadowVisible: false,
-            headerStyle: {
-              backgroundColor: 'rgba(0,0,0,0.94)',
-            },
-            headerTitleStyle: {
-              color: 'white',
-            },
-            headerLeft: (props) => (
-              <TouchableOpacity
-                style={{ paddingLeft: 20, padding: 10 }}
-              >
-                <Ionicons name='chevron-back' size={20} color='#fff' />
-              </TouchableOpacity>
-            ),
-          }}
-        />
+        <Stack.Screen name={paths.SETTINGSSTACK} component={SettingsStack} />
       </Stack.Navigator>
     </NavigationContainer>
   );

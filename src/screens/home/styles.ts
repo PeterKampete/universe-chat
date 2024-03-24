@@ -1,6 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { primary, secondary, tertiary2 } from '../../constants/colors';
-import { DEVICE_WIDTH } from '../../constants/sizes';
+import {
+  lightGrey,
+  primary,
+  secondary,
+  tertiary2,
+} from '../../constants/colors';
+import { DEVICE_HEIGHT, DEVICE_WIDTH } from '../../constants/sizes';
 
 const styles = StyleSheet.create({
   container: {
@@ -42,19 +47,47 @@ const styles = StyleSheet.create({
   },
   bottomInput: {
     position: 'absolute',
-    bottom: -10,
+    bottom: 0,
     alignSelf: 'center',
-    width: '100%',
+    width: DEVICE_WIDTH,
     paddingVertical: 15,
-    backgroundColor: 'rgba(0,0,0,0.93)',
+    backgroundColor: '#000',
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
   },
   sendIcon: {
     backgroundColor: primary,
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10
+    borderRadius: 10,
+    marginLeft: 24,
   },
+  flex: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  translateView: {
+    alignSelf: 'center',
+    width: '90%',
+    paddingVertical: 30,
+    backgroundColor: '#000',
+  },
+  thumbnail: {
+    width: 35,
+    height: 35,
+    resizeMode: 'contain',
+    marginRight: 20,
+  },
+  closeIcon: {
+    position: 'absolute',
+    top: 0,
+    right: 10,
+  },
+  langText: {
+    color: '#fff',
+    fontSize: 17
+  }
 });
 
 export default styles;
