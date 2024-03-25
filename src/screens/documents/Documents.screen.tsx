@@ -24,7 +24,11 @@ const renderTabBar = (props) => (
     )}
     style={{ backgroundColor: 'transparent', shadowColor: 'transparent' }}
     renderIndicator={() => null}
-
+    pressOpacity={0.2}
+    pressColor='rgba(0,0,0,0.05)'
+    tabStyle={{
+      borderRadius: 16,
+    }}
   />
 );
 
@@ -43,8 +47,8 @@ const Documents = () => {
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: 'first', title: 'First' },
-    { key: 'second', title: 'Second' },
+    { key: 'first', title: 'Local Storage' },
+    { key: 'second', title: 'Cloud Storage' },
   ]);
 
   return (

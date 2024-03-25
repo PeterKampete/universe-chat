@@ -30,7 +30,7 @@ const Login = forwardRef<Ref, IProps>(
         closeOnPressBack
       >
         <View style={{ flex: 1, paddingHorizontal: 30, paddingVertical: 10 }}>
-          <Text style={styles.signupText}>Welcom Back</Text>
+          <Text style={styles.signupText}>Welcome Back!</Text>
           <Text style={{ color: '#fff', marginTop: 8 }}>
             Sign in to continue
           </Text>

@@ -8,7 +8,8 @@ import CustomText from './custom-text/CustomText.component';
 import CustomSection from './custom-section/CustomSection.component';
 import AutomationCard from './automation-card/AutomationCard.component';
 import ChatItem from './chat-item/ChatItem.component';
-
+import PieChart from './charts/PieChart';
+import Fab from './fab/Fab.component';
 
 export {
   CustomButton,
@@ -21,4 +22,6 @@ export {
   Login,
   Signup,
   CustomInput,
+  PieChart,
+  Fab,
 };
