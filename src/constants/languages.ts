@@ -8,10 +8,6 @@ export const languages = [
     value: 'Afrikaans',
   },
   {
-    key: 'am',
-    value: 'Amharic',
-  },
-  {
     key: 'ha',
     value: 'Hausa',
   },
@@ -32,10 +28,6 @@ export const languages = [
     value: 'Luganda',
   },
   {
-    key: 'ny',
-    value: 'Nyanja',
-  },
-  {
     key: 'rn',
     value: 'Rundi',
   },
@@ -46,10 +38,6 @@ export const languages = [
   {
     key: 'nso',
     value: 'Sesotho sa Leboa',
-  },
-  {
-    key: 'tn',
-    value: 'Setswana',
   },
   {
     key: 'xh',

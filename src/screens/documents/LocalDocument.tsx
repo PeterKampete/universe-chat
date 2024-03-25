@@ -1,4 +1,5 @@
 import {
+  Alert,
   FlatList,
   Image,
   ScrollView,
@@ -14,7 +15,9 @@ import { tabEnum } from './enum';
 import {
   darkBlue,
   extraDarkBlue,
+  lightAccent,
   lightBlue,
+  primary,
   white1,
 } from '../../constants/colors';
 import { DEVICE_HEIGHT, DEVICE_WIDTH } from '../../constants/sizes';
@@ -22,28 +25,97 @@ import { Ionicons } from '@expo/vector-icons';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
+  withSpring,
+  withTiming,
 } from 'react-native-reanimated';
 import LinearGradient from 'react-native-linear-gradient';
-import { Fab, PieChart } from '../../components';
+import { CustomButton, CustomText, Fab, PieChart } from '../../components';
 import { uploadTypes } from '../../constants/uploadTypes';
 import { translatedFiles } from '../../constants/translatedFiles';
 import SwipeModal from '@birdwingo/react-native-swipe-modal';
-
-const tabs = ['Local Storage', 'Cloud Storage'];
+import DocumentPicker from 'react-native-document-picker';
+import {
+  AZURE_DOCUMENT_TRANSLATOR_API_VERSION,
+  azureTranslationAxiosInstance,
+  BASE_URL_AZURE_DOCUMENT_TRANSLATOR,
+} from '../../config/config';
+import { AZURE_TRANSLATOR_API_KEY } from '@env';
+import { languages } from '../../constants/languages';
+import { documentTypes } from '../../constants/documentTypes';
+import { Circle } from 'react-native-progress';
 
 const LocalDocuments = () => {
-  const [activeTab, setActiveTab] = useState(tabs[0]);
   const swipeRef = useRef(null);
+  const documentSelectedRefSwipeRef = useRef(null);
+  const [loading, setLoading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [targetLanguage, setTargetLanguage] = useState(null);
+  const [translatedDocument, setTranslatedDocument] = useState('');
+  const [isTranslating, setIsTranslating] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  // const animatedTranslateX = useSharedValue(0);
+  const selectDocument = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: documentTypes,
+      });
 
-  // const animatedStyle = useAnimatedStyle(() => (
-  //   {
-  //     transform: [
-  //       translateX: ,
-  //     ]
-  //   }
-  // ))
+      if (res) {
+        setSelectedFile(res?.[0]);
+        documentSelectedRefSwipeRef.current?.show();
+      }
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        Alert.alert('Canceled');
+      } else {
+        Alert.alert('Unknown Error: ' + JSON.stringify(err));
+      }
+    }
+  };
+
+  const translateDocument = async () => {
+    if (!selectedFile || !targetLanguage) {
+      Alert.alert('Please select a file and target language');
+      return;
+    }
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append('document', {
+        uri: selectedFile.uri,
+        name: selectedFile.name,
+        type: `${selectedFile.type};charset=utf-8`,
+      } as any);
+      formData.append('sourceLanguage', 'en');
+      formData.append('targetLanguage', targetLanguage?.key);
+
+      const response = await azureTranslationAxiosInstance.post(
+        `${BASE_URL_AZURE_DOCUMENT_TRANSLATOR}/translator/document:translate?api-version=${AZURE_DOCUMENT_TRANSLATOR_API_VERSION}`,
+        formData,
+        {
+          headers: {
+            'Ocp-Apim-Subscription-Key': AZURE_TRANSLATOR_API_KEY,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      console.log('response', response);
+      setTranslatedDocument(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error translating document:', error);
+      Alert.alert('Error translating document');
+      setLoading(false);
+    }
+  };
+
+  const clearInputs = () => {
+    setLoading(false);
+    setSelectedFile(null);
+    setTargetLanguage('');
+    setTranslatedDocument(null);
+  };
 
   return (
     <LinearGradient
@@ -120,6 +192,7 @@ const LocalDocuments = () => {
                 },
               ]}
               disabled={type.id !== 0}
+              onPress={type.id === 0 && selectDocument}
             >
               <Image source={type.icon} style={styles.uploadTypeIcon} />
               <View>
@@ -145,7 +218,7 @@ const LocalDocuments = () => {
             ]}
           >
             <Text style={styles.recentHeading}>Recents</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => swipeRef.current?.show()}>
               <Text style={styles.recentHeading}>View All</Text>
             </TouchableOpacity>
           </View>
@@ -178,8 +251,9 @@ const LocalDocuments = () => {
         fixedHeight
         maxHeight={DEVICE_HEIGHT * 0.93}
         topOffset={DEVICE_HEIGHT * 0.08}
+        closeOnPressBack
       >
-        <View style={{ flex: 1, paddingHorizontal: 30, paddingVertical: 10 }}>
+        <View style={{ flex: 1, paddingVertical: 10 }}>
           <View style={styles.recents}>
             {translatedFiles.map((file) => (
               <TouchableOpacity
@@ -202,7 +276,130 @@ const LocalDocuments = () => {
           </View>
         </View>
       </SwipeModal>
-      <Fab onPress={() => swipeRef.current?.show()} />
+      <SwipeModal
+        ref={documentSelectedRefSwipeRef}
+        style={[
+          styles.swipeModal,
+          { borderTopRightRadius: 20, borderTopLeftRadius: 20 },
+        ]}
+        bg={'#fff'}
+        fixedHeight
+        maxHeight={DEVICE_HEIGHT * 0.58}
+        topOffset={DEVICE_HEIGHT * 0.08}
+        onHide={clearInputs}
+        scrollEnabled
+        closeOnPressBack
+      >
+        <Text style={styles.recentHeading}>Select Target Language</Text>
+        <View style={styles.languagesView}>
+          {languages.map((lang) => (
+            <TouchableOpacity
+              key={lang.key}
+              style={[
+                styles.langItem,
+                {
+                  backgroundColor:
+                    targetLanguage?.value === lang.value ? darkBlue : '#fff',
+                },
+              ]}
+              onPress={() => setTargetLanguage(lang)}
+            >
+              <Text
+                style={{
+                  color:
+                    targetLanguage?.value === lang.value ? '#fff' : darkBlue,
+                }}
+              >
+                {lang.value}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+        <View
+          style={[
+            styles.translateView,
+            {
+              backgroundColor: isSuccess ? 'green' : extraDarkBlue,
+            },
+          ]}
+        >
+          <View style={[styles.flexRow, { height: '100%' }]}>
+            {isTranslating ? (
+              <Circle
+                size={45}
+                borderWidth={3}
+                thickness={3}
+                progress={0.4}
+                unfilledColor={lightBlue}
+                color={'#fff'}
+                animated
+                showsText
+                textStyle={{
+                  fontSize: 10,
+                  fontWeight: 'bold',
+                  color: '#fff',
+                }}
+                style={{ marginRight: 10 }}
+              />
+            ) : (
+              <Image
+                source={require('../../assets/images/document-white.png')}
+                style={styles.uploadTypeIcon}
+              />
+            )}
+
+            <View>
+              <Text
+                style={[
+                  styles.uploadTypeTitle,
+                  { color: '#fff', marginBottom: 2 },
+                ]}
+              >
+                {isTranslating && 'Translating '}
+                {'Awa and Sons.pdf'}
+                {isTranslating && ' ... '}
+              </Text>
+              <Text
+                style={[
+                  styles.uploadTypeLabel,
+                  { color: lightAccent, fontSize: 13 },
+                ]}
+              >
+                {'English - Zulu'}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.flexRow}>
+            {isSuccess && (
+              <TouchableOpacity>
+                <Image
+                  source={require('../../assets/images/download-white.png')}
+                  style={[
+                    styles.uploadTypeIcon,
+                    { width: DEVICE_WIDTH * 0.07, marginRight: 26 },
+                  ]}
+                />
+              </TouchableOpacity>
+            )}
+            {isTranslating ? (
+              <TouchableOpacity onPress={() => setIsTranslating(false)}>
+                <Ionicons name='stop-circle' size={24} color={'#fff'} />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity onPress={() => setIsTranslating(true)}>
+                <Image
+                  source={require('../../assets/images/translate-white.png')}
+                  style={[
+                    styles.uploadTypeIcon,
+                    { width: DEVICE_WIDTH * 0.08 },
+                  ]}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
+      </SwipeModal>
+      <Fab onPress={selectDocument} />
     </LinearGradient>
   );
 };

@@ -11,7 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { darkBlue, extraDarkBlue } from '../../constants/colors';
 
 interface IProps {
-  onPress: ((event: GestureResponderEvent) => void) | undefined;
+  onPress?: ((event: GestureResponderEvent) => void) | undefined;
 }
 
 const Fab = ({ onPress }: IProps) => {

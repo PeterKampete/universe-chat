@@ -1,6 +1,11 @@
 import { StyleSheet } from 'react-native';
 import { DEVICE_HEIGHT, DEVICE_WIDTH } from '../../constants/sizes';
-import { darkBlue, extraDarkBlue, lightAccent, lightBlue } from '../../constants/colors';
+import {
+  darkBlue,
+  extraDarkBlue,
+  lightAccent,
+  lightBlue,
+} from '../../constants/colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -72,7 +77,7 @@ const styles = StyleSheet.create({
   },
   uploadTypeTitle: {
     fontWeight: 'bold',
-    flexShrink: 15,
+    fontSize: 15,
   },
   uploadTypeLabel: {
     color: lightAccent,
@@ -122,7 +127,38 @@ const styles = StyleSheet.create({
   },
   swipeModal: {
     width: DEVICE_WIDTH,
+    paddingHorizontal: 20,
   },
+  languagesView: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+    paddingVertical: 16,
+    justifyContent: 'space-evenly',
+  },
+  langItem: {
+    borderWidth: 1,
+    borderColor: darkBlue,
+    borderRadius: 10,
+    padding: 9,
+    paddingHorizontal: 20,
+  },
+  translateView: {
+    padding: 16,
+    height: DEVICE_HEIGHT * 0.1,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    marginTop: DEVICE_HEIGHT * 0.04,
+    borderRadius: 20,
+
+  },
+  translatingHeading: {},
+  translatingLabel: {
+    color: lightBlue,
+    marginBottom: 4,
+    fontSize: 11,
+  },
+  circularTranslateProgress: {},
 });
 
 export default styles;
